@@ -1,9 +1,10 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+
 }
 
-.content-container {
-  padding: 50px;
+.bg-dark-red {
+  background-color: #cc3428;
 }
 
 .header {
