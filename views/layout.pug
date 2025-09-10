@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title= title
+    link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css")
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+  nav.navbar.navbar-expand-lg.header
+    .container-fluid
+      a.navbar-brand(href="/") Beunotheek
+      button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#navbarNavAltMarkup", aria-controls="navbarNavAltMarkup", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      #navbarNavAltMarkup.collapse.navbar-collapse
+        .navbar-nav
+          a.nav-link.active(aria-current="page", href="/") Home
+          a.nav-link(href="/movies") Films
+          a.nav-link(href="/about") Over ons
+
+  body
+    .content-container
+      block content
+
+  footer.bg-dark.text-white.mt-5.p-4.text-center
+    p &copy; #{new Date().getFullYear()} Beunotheek. Alle rechten voorbehouden.
+
+  script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js")

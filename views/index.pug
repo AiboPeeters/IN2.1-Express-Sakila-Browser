@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+
+  .card
+    .card-header Quote
+    .card-body
+      figure
+        blockquote.blockquote
+          p Beunen
+        figcaption.blockquote-footer
+          cite(title="Source Title") John Beun
+
