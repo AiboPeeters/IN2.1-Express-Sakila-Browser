@@ -4,6 +4,17 @@ block content
   h1= title
   p Welcome to #{title}
 
+
+  h3 Uitgelichte films:
+  #carouselExampleSlidesOnly.carousel.slide.carousel-banner(data-bs-ride="carousel" data-bs-interval="1")
+    .carousel-inner
+      .carousel-item.active
+        img.d-block.w-100(src="/images/Beunotheek-logo.png" alt="Slide 1")
+      .carousel-item
+        img.d-block.w-100(src="/images/Beunotheek-logo-transparant.png" alt="Slide 2")
+      .carousel-item
+        img.d-block.w-100(src="/images/Beunotheek-logo-transparant-outline.png" alt="Slide 3")
+
   .card
     .card-header Quote
     .card-body

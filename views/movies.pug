@@ -1,9 +1,36 @@
 extends layout
 
 block content
+
   h1= title
-  p Welcome to #{title}
-  
-  ul 
-    each movie in movies
-      li= movie.title
+  p Hieronder ziet u een lijst met beschikbare films.
+
+  form(method="get", action="/movies", class="mb-4 d-flex align-items-center gap-2")
+    label(for="limit", class="form-label mb-0 me-2") Aantal films per pagina:
+    select#limit.form-select(name="limit", onchange="this.form.submit()", style="width: auto;")
+      option(value="5" selected=limit==5) 5
+      option(value="10" selected=limit==10) 10
+      option(value="20" selected=limit==20) 20
+      option(value="40" selected=limit==40) 40
+    input(type="hidden", name="page", value=page)
+
+  .container
+    .row
+      each movie in movies
+        .col-md-4.mb-4
+          .card.h-100
+            img.card-img-top(src="/images/Beunotheek-logo.png" alt="Beunotheek logo")
+            .card-body
+              h5.card-title #{movie.title}
+              p.card-text #{movie.description}
+              a.btn.btn-primary(href=`/movies/${movie.film_id}`) Details
+
+  if totalPages > 1
+    nav(aria-label="Paginering")
+      ul.pagination.justify-content-center
+        li.page-item(class=page==1 ? 'disabled' : '')
+          a.page-link(href=page==1 ? '#' : `/movies?page=${page-1}&limit=${limit}`) Previous
+        li.page-item.active
+          span.page-link #{page}
+        li.page-item(class=page==totalPages ? 'disabled' : '')
+          a.page-link(href=page==totalPages ? '#' : `/movies?page=${page+1}&limit=${limit}`) Next

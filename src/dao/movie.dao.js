@@ -18,7 +18,7 @@ const pool = mysql.createPool({
 module.exports = pool;
 
 function getAllMovies(callback) {
-    pool.query("SELECT title FROM film", (err, results) => {
+    pool.query("SELECT title, description, film_id FROM film", (err, results) => {
         if (err) {
             return callback(err, null);
         }
@@ -26,4 +26,29 @@ function getAllMovies(callback) {
     });
 }
 
-module.exports = { getAllMovies };
+function getMoviesPaginated(page, limit, callback) {
+    const offset = (page - 1) * limit;
+    pool.query(
+        "SELECT title, description, film_id FROM film LIMIT ? OFFSET ?; SELECT COUNT(*) as count FROM film;",
+        [limit, offset],
+        (err, results) => {
+            if (err) {
+                return callback(err, null, 0);
+            }
+            const movies = results[0];
+            const totalCount = results[1][0].count;
+            callback(null, movies, totalCount);
+        }
+    );
+}
+
+function getMoviesById(id, callback) {
+    pool.query("SELECT * FROM film WHERE film_id = ?", [id], (err, results) => {
+        if (err) {
+            return callback(err, null);
+        }
+        callback(null, results[0]);
+    });
+}
+
+module.exports = { getAllMovies, getMoviesById, getMoviesPaginated };
