@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  body.d-flex.align-items-center.justify-content-center.min-vh-100.bg-light
+    h2.text-center.mb-4 Beunotheek Login
+
+    h4
+     b Inloggen bij Beunotheek
+
+    form(method="POST", action="/auth/login")
+      .mb-3
+        label.form-label(for="email")
+        input#email.form-control(type="email", name="email", placeholder="E-mail adres*", required, 
+          class=(error ? "is-invalid" : "") value=(typeof email !== 'undefined' ? email : ''))
+        if error
+          .invalid-feedback Email of Wachtwoord incorrect
+     
+        label.form-label(for="password")
+        input#password.form-control(type="password", name="password", placeholder="Wachtwoord*", required,
+          class=(error ? "is-invalid" : ""))
+        if error
+          .invalid-feedback Email of Wachtwoord incorrect
+      .mb-3
+        button.btn.btn-primary.w-100(type="submit") Login
+
+    .text-center.mt-3
+      small.text-muted
+        | Geen account? 
+        a(href="/auth/register") Registreer hier een account.
+

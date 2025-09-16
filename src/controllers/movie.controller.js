@@ -1,40 +1,168 @@
-const express = require("express");
-const router = express.Router();
-const movieService = require("../services/movie.service")
+const movieService = require("../services/movie.service");
+const logger = require("../util/logger");
+
+const TAG = "movie.controller";
+
+function buildPagination(page, totalPages) {
+    let pageLinks = [];
+    let lastLink = 0;
+
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= page - 2 && i <= page + 2)) {
+            if (i - lastLink > 1) {
+                pageLinks.push({ type: "ellipsis" });
+            }
+            pageLinks.push({
+                type: "page",
+                number: i,
+                active: i === page
+            });
+            lastLink = i;
+        }
+    }
+
+    return {
+        hasPrev: page > 1,
+        hasNext: page < totalPages,
+        prevPage: page - 1,
+        nextPage: page + 1,
+        pageLinks
+    };
+}
 
 function getAllMovies(req, res, next) {
-    //vanaf hier gaan we naar de services laag.
-    const model = { title: "movies" };
     const page = req.query.page ? parseInt(req.query.page) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit) : 5;
 
     movieService.getMovies(page, limit, (movies, totalCount) => {
         const totalPages = Math.ceil(totalCount / limit);
-        const model = {
+        const pagination = buildPagination(page, totalPages);
+
+        logger.debug(TAG, `Rendering movies page ${page} of ${totalPages}`);
+
+        res.render("movies", {
             title: "Beschikbare Films",
-            movies: movies,
+            movies,
             page,
             limit,
-            totalPages
-        };
-        const view = "movies"
-        res.render(view, model);
+            totalPages,
+            pagination
+        });
     });
-};
-
-function getMovie(req, res, next) {
-
-    const model = { title: "moviesDetails" };
-    const id = req.params.id;
-
-    movieService.getMovieById(id, (moviesDetails) => {
-        const model = {
-            title: "Film Details",
-            moviesDetails: moviesDetails
-        };
-        const view = "moviesDetails"
-        res.render(view, model);
-    })
 }
 
-module.exports = { getAllMovies, getMovie };
+function getMovieDetailsById(req, res, next) {
+    const id = req.params.id;
+
+    movieService.getMovieById(id, (movie) => {
+        if (!movie) {
+            logger.warn(TAG, `Movie with id ${id} not found`);
+            return res.status(404).send("Film niet gevonden");
+        }
+
+        res.render("movieDetails", {
+            title: "Film Details",
+            movieDetails: movie
+        });
+    });
+}
+
+function getEditMovie(req, res, next) {
+    if (!req.session.user) {
+        logger.warn(TAG, "Unauthorized access to edit page");
+        return res.redirect("/auth/login");
+    }
+
+    const id = req.params.id;
+    movieService.getMovieById(id, (movie) => {
+        if (!movie) {
+            logger.warn(TAG, `Movie with id ${id} not found for editing`);
+            return res.status(404).send("Film niet gevonden");
+        }
+
+        res.render("movieEdit", {
+            title: "Edit Film",
+            movie
+        });
+    });
+}
+
+function postEditMovie(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect("/auth/login");
+    }
+
+    const id = req.params.id;
+
+    movieService.getMovieById(id, (movie) => {
+        if (!movie) return res.status(404).send("Film niet gevonden");
+
+        const updatedMovie = {
+            title: req.body.title || movie.title,
+            description: req.body.description || movie.description,
+            release_year: req.body.release_year || movie.release_year,
+            language_id: req.body.language_id || movie.language_id,
+            rental_duration: req.body.rental_duration || movie.rental_duration,
+            rental_rate: req.body.rental_rate || movie.rental_rate,
+            replacement_cost: req.body.replacement_cost || movie.replacement_cost,
+            length: req.body.length || movie.length,
+            rating: req.body.rating || movie.rating,
+            image: req.body.image || movie.image,
+        };
+
+        movieService.updateMovie(id, updatedMovie, (err) => {
+            if (err) return next(err);
+            res.redirect(`/movies/${id}`);
+        });
+    });
+}
+
+function deleteMovie(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect("/auth/login");
+    }
+
+    const id = req.params.id;
+
+    movieService.deleteMovie(id, (err) => {
+        if (err) return next(err);
+        res.redirect("/movies");
+    });
+}
+
+function getCreateMovie(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect("/auth/login");
+    }
+
+    res.render("movieCreate", {
+        title: "Nieuwe Film Toevoegen"
+    });
+}
+
+function postCreateMovie(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect("/auth/login");
+    }
+
+    const newMovie = {
+        title: req.body.title,
+        description: req.body.description,
+        release_year: req.body.release_year,
+        language_id: req.body.language_id,
+        rental_duration: req.body.rental_duration,
+        rental_rate: req.body.rental_rate,
+        replacement_cost: req.body.replacement_cost,
+        length: req.body.length,
+        rating: req.body.rating,
+        image: req.body.image
+    };
+
+    movieService.createMovie(newMovie, (err, result) => {
+        if (err) return next(err);
+        res.redirect("/movies");
+    });
+}
+
+module.exports = { getAllMovies, getMovieDetailsById, getEditMovie, postEditMovie, deleteMovie, getCreateMovie, postCreateMovie };
+

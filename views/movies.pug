@@ -19,7 +19,9 @@ block content
       each movie in movies
         .col-md-4.mb-4
           .card.h-100
-            img.card-img-top(src="/images/Beunotheek-logo.png" alt="Beunotheek logo")
+            .poster-container
+              img.poster-bg(src=movie.image, alt="Poster achtergrond")
+              img.poster-fg(src=movie.image, alt="Filmposter")
             .card-body
               h5.card-title #{movie.title}
               p.card-text #{movie.description}
@@ -28,9 +30,17 @@ block content
   if totalPages > 1
     nav(aria-label="Paginering")
       ul.pagination.justify-content-center
-        li.page-item(class=page==1 ? 'disabled' : '')
-          a.page-link(href=page==1 ? '#' : `/movies?page=${page-1}&limit=${limit}`) Previous
-        li.page-item.active
-          span.page-link #{page}
-        li.page-item(class=page==totalPages ? 'disabled' : '')
-          a.page-link(href=page==totalPages ? '#' : `/movies?page=${page+1}&limit=${limit}`) Next
+
+        li.page-item(class=!pagination.hasPrev ? 'disabled' : '')
+          a.page-link(href=pagination.hasPrev ? `/movies?page=${pagination.prevPage}&limit=${limit}` : '#') &laquo; Prev
+
+        each link in pagination.pageLinks
+          if link.type === 'ellipsis'
+            li.page-item.disabled.d-none.d-sm-block
+              span.page-link …
+          else if link.type === 'page'
+            li.page-item(class=link.active ? 'active d-none d-sm-block' : 'd-none d-sm-block')
+              a.page-link(href=`/movies?page=${link.number}&limit=${limit}`) #{link.number}
+
+        li.page-item(class=!pagination.hasNext ? 'disabled' : '')
+          a.page-link(href=pagination.hasNext ? `/movies?page=${pagination.nextPage}&limit=${limit}` : '#') Next &raquo;

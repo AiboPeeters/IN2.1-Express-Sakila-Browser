@@ -1,24 +1,59 @@
+const logger = require("../util/logger");
 const movieDao = require("../dao/movie.dao");
 
+const TAG = "movie.service";
 
 function getMovies(page, limit, callback) {
-    movieDao.getMoviesPaginated(page, limit, (err, movies, totalCount) => {
+    movieDao.getAllMovies(page, limit, (err, movies, totalCount) => {
         if (err) {
-            console.error("Error fetching movies:", err);
+            logger.error(TAG, "Error fetching movies", err);
             return callback([], 0);
         }
+        logger.debug(TAG, "Fetched ${movies.length} movies, totalCount: ${totalCount}");
         callback(movies, totalCount);
     });
 }
 
 function getMovieById(id, callback) {
-    movieDao.getMoviesById(id, (err, movies) => {
+    movieDao.getMoviesById(id, (err, movie) => {
         if (err) {
-            console.error("Error finding movie:", err);
-            return callback([]);
+            logger.error(TAG, "Error finding movie with id ${id}", err);
+            return callback(null);
         }
-        callback(movies);
+        callback(movie);
     });
 }
 
-module.exports = { getMovies, getMovieById };
+function updateMovie(id, movie, callback) {
+    movieDao.updateMovie(id, movie, (err) => {
+        if (err) {
+            logger.error(TAG, "Error updating movie with id ${id}", err);
+            return callback(err);
+        }
+        logger.info(TAG, "Movie with id ${id} updated successfully");
+        callback(null);
+    });
+}
+
+function deleteMovie(id, callback) {
+    movieDao.deleteMovie(id, callback, (err) => {
+        if (err) {
+            logger.error(TAG, "Error deleting movie with id ${id}", err);
+            return callback(err);
+        }
+        logger.info(TAG, "Movie was deleted successfully");
+        callback(null);
+    });
+}
+
+function createMovie(movie, callback) {
+    movieDao.createMovie(movie, callback, (err) => {
+        if (err) {
+            logger.error(TAG, "Error deleting movie with id ${id}", err);
+            return callback(err);
+        }
+        logger.info(TAG, "Movie was deleted successfully");
+    });
+}
+
+module.exports = { getMovies, getMovieById, updateMovie, deleteMovie, createMovie };

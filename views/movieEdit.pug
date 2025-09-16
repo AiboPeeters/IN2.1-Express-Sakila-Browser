@@ -1,0 +1,53 @@
+extends layout
+
+block content
+  a.btn.btn-outline-dark(href=`/movies/${movie.film_id}`) Terug naar details
+
+  h1.mb-4 Edit: #{movie.title}
+
+  form(action=`/movies/${movie.film_id}/edit`, method="POST")
+    .row
+      .col-md-4
+        img.img-fluid.rounded.mb-3(src=movie.image || "/images/Beunotheek-logo.png", alt="Film Poster")
+        label.form-label(for="image") Poster URL
+        input.form-control(type="text", name="image", id="image", value=movie.image)
+
+      .col-md-5
+        label.form-label(for="description") Beschrijving
+        textarea.form-control(name="description", id="description", rows="10") #{movie.description}
+
+      .col-md-3
+        .card.mb-3.border-primary
+          .card-body
+            h5.card-title Huurinformatie
+            label.form-label(for="rental_rate") Huurprijs
+            input.form-control(type="text", name="rental_rate", id="rental_rate", value=movie.rental_rate)
+            
+            label.form-label(for="rental_duration") Huur lengte
+            input.form-control(type="text", name="rental_duration", id="rental_duration", value=movie.rental_duration)
+
+            label.form-label(for="replacement_cost") Vervangingskosten
+            input.form-control(type="text", name="replacement_cost", id="replacement_cost", value=movie.replacement_cost)
+                    
+        .card.mb-3.border-primary
+          .card-body
+            h5.card-title Details
+            label.form-label(for="release_year") Uitgavejaar
+            input.form-control(type="text", name="release_year", id="release_year", value=movie.release_year)
+            
+            label.form-label(for="length") Lengte (minuten)
+            input.form-control(type="text", name="length", id="length", value=movie.length)
+            
+            label.form-label(for="rating") Leeftijdsclassificatie
+            input.form-control(type="text", name="rating", id="rating", value=movie.rating)
+            
+            label.form-label(for="language") Taal
+            input.form-control(type="text", name="language", id="language", value=movie.language)
+
+    .d-flex.mt-3
+        .d-flex.mt-3
+        form(action=`/movies/${movie.film_id}/edit` method="post")
+            button.btn.btn-success(type="submit") Opslaan
+
+        form(action=`/movies/${movie.film_id}/delete` method="post" onsubmit="return confirm('Weet je zeker dat je deze film wilt verwijderen?');")
+            button.btn.btn-danger.ms-2(type="submit") Verwijder film

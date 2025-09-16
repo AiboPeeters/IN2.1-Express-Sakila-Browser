@@ -1,0 +1,46 @@
+extends layout
+
+block content
+  a.btn.btn-outline-dark(href="/movies") Terug
+
+  h1.mb-4 #{movieDetails.title}
+
+  .row
+    .col-md-4
+      img.img-fluid.rounded(src=movieDetails.image, alt="Film Poster")
+
+    .col-md-5
+      p.lead #{movieDetails.description}
+
+    .col-md-3
+      .card.mb-3.border-primary
+        .card-body
+          h5.card-title Huurinformatie
+          p.mb-1
+            strong Huurprijs: 
+            | #{movieDetails.rental_rate}
+          p.mb-1
+            strong Huur lengte: 
+            | #{movieDetails.rental_duration}
+          p.mb-1
+            strong Vervangingskosten: 
+            | #{movieDetails.replacement_cost}
+      
+      .card.mb-3.border-primary
+        .card-body
+          h5.card-title Details
+          p.mb-1 
+            strong Uitgavejaar: 
+            | #{movieDetails.release_year}
+          p.mb-1 
+            strong Lengte: 
+            | #{movieDetails.length} minuten
+          p.mb-1 
+            strong Leeftijdsclassificatie: 
+            | #{movieDetails.rating}
+          p.mb-1 
+            strong Taal: 
+            | #{movieDetails.language}
+
+  if isAuthenticated
+    a.btn.btn-primary.mt-3(href=`/movies/${movieDetails.film_id}/edit`) Edit
