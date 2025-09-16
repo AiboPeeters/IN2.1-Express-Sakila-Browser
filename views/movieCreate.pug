@@ -17,8 +17,11 @@ block content
       input.form-control(type="number" name="release_year" id="release_year")
 
     .mb-3
-      label.form-label(for="language_id") Taal ID
-      input.form-control(type="number" name="language_id" id="language_id")
+    label.form-label(for="language_id") Taal
+    select.form-select(name="language_id" id="language_id" required)
+        option(value="" disabled selected) Kies een taal
+        each lang in languages
+            option(value=lang.language_id)= lang.name
 
     .mb-3
       label.form-label(for="rental_duration") Verhuurtermijn

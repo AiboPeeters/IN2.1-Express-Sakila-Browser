@@ -68,21 +68,21 @@ function getMovieDetailsById(req, res, next) {
 }
 
 function getEditMovie(req, res, next) {
-    if (!req.session.user) {
-        logger.warn(TAG, "Unauthorized access to edit page");
-        return res.redirect("/auth/login");
-    }
+    if (!req.session.user) return res.redirect("/auth/login");
 
     const id = req.params.id;
-    movieService.getMovieById(id, (movie) => {
-        if (!movie) {
-            logger.warn(TAG, `Movie with id ${id} not found for editing`);
-            return res.status(404).send("Film niet gevonden");
-        }
 
-        res.render("movieEdit", {
-            title: "Edit Film",
-            movie
+    movieService.getMovieById(id, (movie) => {
+        if (!movie) return res.status(404).send("Film niet gevonden");
+
+        movieService.getAllLanguages((err, languages) => {
+            if (err) return next(err);
+
+            res.render("movieEdit", {
+                title: "Edit Film",
+                movie,
+                languages
+            });
         });
     });
 }
@@ -131,12 +131,14 @@ function deleteMovie(req, res, next) {
 }
 
 function getCreateMovie(req, res, next) {
-    if (!req.session.user) {
-        return res.redirect("/auth/login");
-    }
+    if (!req.session.user) return res.redirect("/auth/login");
 
-    res.render("movieCreate", {
-        title: "Nieuwe Film Toevoegen"
+    movieService.getAllLanguages((err, languages) => {
+        if (err) return next(err);
+        res.render("movieCreate", {
+            title: "Nieuwe Film Toevoegen",
+            languages
+        });
     });
 }
 

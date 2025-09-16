@@ -56,4 +56,8 @@ function createMovie(movie, callback) {
     });
 }
 
-module.exports = { getMovies, getMovieById, updateMovie, deleteMovie, createMovie };
+function getAllLanguages(callback) {
+    movieDao.getAllLanguages(callback);
+}
+
+module.exports = { getMovies, getMovieById, updateMovie, deleteMovie, createMovie, getAllLanguages };

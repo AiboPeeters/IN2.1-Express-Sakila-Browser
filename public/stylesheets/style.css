@@ -94,3 +94,14 @@ a {
   object-fit: contain;
   z-index: 1;
 }
+
+.rating-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 50px;
+  height: auto;
+  border-radius: 6px;
+  padding: 2px;
+  z-index: 2;
+}

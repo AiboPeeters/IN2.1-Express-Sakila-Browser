@@ -26,6 +26,7 @@ function getAllMovies(page, limit, callback) {
             title, 
             description, 
             image, 
+            rating,
             rental_rate, 
             rental_duration, 
             replacement_cost 

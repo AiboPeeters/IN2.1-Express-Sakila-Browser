@@ -41,8 +41,11 @@ block content
             label.form-label(for="rating") Leeftijdsclassificatie
             input.form-control(type="text", name="rating", id="rating", value=movie.rating)
             
-            label.form-label(for="language") Taal
-            input.form-control(type="text", name="language", id="language", value=movie.language)
+            label.form-label(for="language_id") Taal
+            select.form-select(name="language_id" id="language_id")
+                each lang in languages
+                    option(value=lang.language_id selected=(lang.language_id === movie.language_id))= lang.name
+
 
     .d-flex.mt-3
         .d-flex.mt-3
