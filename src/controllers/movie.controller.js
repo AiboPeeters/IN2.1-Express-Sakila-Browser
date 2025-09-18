@@ -38,7 +38,7 @@ function getAllMovies(req, res, next) {
         const totalPages = Math.ceil(totalCount / limit);
         const pagination = buildPagination(page, totalPages);
 
-        logger.debug(TAG, `Rendering movies page ${page} of ${totalPages}`);
+        logger.debug(`${TAG} Rendering movies page ${page} of ${totalPages}`);
 
         res.render("movies", {
             title: "Beschikbare Films",
@@ -56,10 +56,11 @@ function getMovieDetailsById(req, res, next) {
 
     movieService.getMovieById(id, (movie) => {
         if (!movie) {
-            logger.warn(TAG, `Movie with id ${id} not found`);
+            logger.warn(`${TAG} Movie with id ${id} not found`);
             return res.status(404).send("Film niet gevonden");
         }
 
+        logger.debug(`${TAG} Rendering details for movie id ${id}`);
         res.render("movieDetails", {
             title: "Film Details",
             movieDetails: movie
@@ -76,8 +77,12 @@ function getEditMovie(req, res, next) {
         if (!movie) return res.status(404).send("Film niet gevonden");
 
         movieService.getAllLanguages((err, languages) => {
-            if (err) return next(err);
+            if (err) {
+                logger.error(`${TAG} Error fetching languages: ${err}`);
+                return next(err);
+            }
 
+            logger.debug(`${TAG} Rendering edit page for movie id ${id}`);
             res.render("movieEdit", {
                 title: "Edit Film",
                 movie,
@@ -111,7 +116,11 @@ function postEditMovie(req, res, next) {
         };
 
         movieService.updateMovie(id, updatedMovie, (err) => {
-            if (err) return next(err);
+            if (err) {
+                logger.error(`${TAG} Error updating movie id ${id}: ${err}`);
+                return next(err);
+            }
+            logger.info(`${TAG} Movie id ${id} updated`);
             res.redirect(`/movies/${id}`);
         });
     });
@@ -125,7 +134,11 @@ function deleteMovie(req, res, next) {
     const id = req.params.id;
 
     movieService.deleteMovie(id, (err) => {
-        if (err) return next(err);
+        if (err) {
+            logger.error(`${TAG} Error deleting movie id ${id}: ${err}`);
+            return next(err);
+        }
+        logger.info(`${TAG} Movie id ${id} deleted`);
         res.redirect("/movies");
     });
 }
@@ -134,7 +147,11 @@ function getCreateMovie(req, res, next) {
     if (!req.session.user) return res.redirect("/auth/login");
 
     movieService.getAllLanguages((err, languages) => {
-        if (err) return next(err);
+        if (err) {
+            logger.error(`${TAG} Error fetching languages: ${err}`);
+            return next(err);
+        }
+        logger.debug(`${TAG} Rendering create movie page`);
         res.render("movieCreate", {
             title: "Nieuwe Film Toevoegen",
             languages
@@ -161,7 +178,11 @@ function postCreateMovie(req, res, next) {
     };
 
     movieService.createMovie(newMovie, (err, result) => {
-        if (err) return next(err);
+        if (err) {
+            logger.error(`${TAG} Error creating movie: ${err}`);
+            return next(err);
+        }
+        logger.info(`${TAG} Movie created with id ${result.film_id}`);
         res.redirect("/movies");
     });
 }

@@ -47,26 +47,24 @@ module.exports = {
 
         logger.debug(`${TAG} - register called with: ${credentials.email}`);
 
-        // Check of user al bestaat
         authDao.findUserByEmail(credentials.email, (err, existingUser) => {
             if (err) {
-                logger.error(TAG, "error in DAO: ${err}");
+                logger.error(`${TAG} - error in DAO: ${err}`);
                 return callback(err, null);
             }
 
             if (existingUser) {
-                logger.warn(TAG, "email already in use: ${credentials.email}");
+                logger.warn(`${TAG} - email already in use: ${credentials.email}`);
                 return callback({ message: "Email already registered" }, null);
             }
 
-            // Nieuwe user opslaan
             authDao.createUser(credentials, (err, newUser) => {
                 if (err) {
-                    logger.error(TAG, "error creating user: ${err}");
+                    logger.error(`${TAG} - error creating user: ${err}`);
                     return callback(err, null);
                 }
 
-                logger.info(TAG, "register success: ${credentials.email}");
+                logger.info(`${TAG} - register success: ${credentials.email}`);
                 return callback(null, newUser);
             });
         });

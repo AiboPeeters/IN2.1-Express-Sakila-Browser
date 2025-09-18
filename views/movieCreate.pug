@@ -10,38 +10,40 @@ block content
 
     .mb-3
       label.form-label(for="description") Beschrijving
-      textarea.form-control(name="description" id="description")
+      textarea.form-control(name="description" id="description" required)
 
     .mb-3
-      label.form-label(for="release_year") Uitgavejaar
-      input.form-control(type="number" name="release_year" id="release_year")
+    label.form-label(for="release_year") Uitgavejaar
+    input.form-control(type="number" name="release_year" id="release_year" required min="1800" max="2099" step="1")
+    .invalid-feedback Vul een geldig jaartal in (1800–2099).
+
 
     .mb-3
-    label.form-label(for="language_id") Taal
-    select.form-select(name="language_id" id="language_id" required)
+      label.form-label(for="language_id") Taal
+      select.form-select(name="language_id" id="language_id" required)
         option(value="" disabled selected) Kies een taal
         each lang in languages
-            option(value=lang.language_id)= lang.name
+          option(value=lang.language_id)= lang.name
 
-    .mb-3
+    .mb-3 
       label.form-label(for="rental_duration") Verhuurtermijn
-      input.form-control(type="number" name="rental_duration" id="rental_duration")
+      input.form-control(type="number" name="rental_duration" id="rental_duration" min="0" required)
 
     .mb-3
       label.form-label(for="rental_rate") Verhuurprijs
-      input.form-control(type="number" step="0.01" name="rental_rate" id="rental_rate")
+      input.form-control(type="number" step="0.01" name="rental_rate" id="rental_rate" min="0" required)
 
     .mb-3
-      label.form-label(for="replacement_cost") Vervangingskost
-      input.form-control(type="number" step="0.01" name="replacement_cost" id="replacement_cost")
+      label.form-label(for="replacement_cost") Vervangingskosten
+      input.form-control(type="number" step="0.01" name="replacement_cost" id="replacement_cost" min="0" required)
 
     .mb-3
       label.form-label(for="length") Lengte
-      input.form-control(type="number" name="length" id="length")
+      input.form-control(type="number" name="length" id="length" min="0" required)
 
     .mb-3
       label.form-label(for="rating") Leeftijdsclassificatie
-      input.form-control(type="text" name="rating" id="rating")
+      input.form-control(type="text" name="rating" id="rating" required)
 
     .mb-3
       label.form-label(for="image") Afbeelding URL

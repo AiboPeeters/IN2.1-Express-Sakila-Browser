@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  a.btn.btn-outline-dark(href="/movies") Terug
+  a.btn.btn-outline-dark.mb-2(href="/movies") Terug
 
   h1.mb-4 #{movieDetails.title}
 
@@ -20,8 +20,8 @@ block content
             strong Huurprijs: 
             | #{movieDetails.rental_rate}
           p.mb-1
-            strong Huur lengte: 
-            | #{movieDetails.rental_duration}
+            strong Huurtermijn: 
+            | #{movieDetails.rental_duration} dagen
           p.mb-1
             strong Vervangingskosten: 
             | #{movieDetails.replacement_cost}

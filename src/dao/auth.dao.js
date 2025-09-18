@@ -19,25 +19,27 @@ const pool = mysql.createPool({
 
 module.exports = {
     findUserByEmail(email, callback) {
-        logger.debug(TAG, 'findUserByEmail', email);
+        logger.debug(`${TAG} findUserByEmail: ${email}`);
 
         const sql = "SELECT email, password, username FROM staff WHERE email = ?;";
         pool.query(sql, [email], (err, results) => {
             if (err) {
-                logger.error(TAG, 'findUserByEmail error', err);
+                logger.error(`${TAG} findUserByEmail error: ${err}`);
                 return callback(err, null);
             }
 
             if (results.length > 0) {
+                logger.debug(`${TAG} User found for email: ${email}`);
                 callback(null, results[0]);
             } else {
+                logger.debug(`${TAG} No user found for email: ${email}`);
                 callback(null, null);
             }
         });
     },
 
     createUser(user, callback) {
-        logger.debug(TAG, 'createUser', user.email);
+        logger.debug(`${TAG} createUser: ${user.email}`);
 
         const sql = `
         INSERT INTO staff 
@@ -56,10 +58,11 @@ module.exports = {
             user.password
         ], (err, result) => {
             if (err) {
-                logger.error(TAG, 'createUser error', err);
+                logger.error(`${TAG} createUser error: ${err}`);
                 return callback(err, null);
             }
 
+            logger.info(`${TAG} User created with id: ${result.insertId}`);
             callback(null, { id: result.insertId, ...user });
         });
     }

@@ -22,7 +22,6 @@ html
           .navbar-nav
             if !isAuthenticated
               a.nav-link(href="/auth/login") Login
-              a.nav-link(href="/auth/register") Registreer
             else
               span.nav-link.text-white Hallo, #{username}!
               a.nav-link(href="/auth/logout") Uitloggen

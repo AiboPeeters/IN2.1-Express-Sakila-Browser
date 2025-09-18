@@ -42,10 +42,10 @@ block content
               else if movie.rating == "18"
                 img.rating-icon(src="https://www.kijkwijzer.nl/media/xtimbi5i/18.png", alt="18")
            
-            .card-body
+            .card-body.d-flex.flex-column
               h5.card-title #{movie.title}
               p.card-text #{movie.description}
-              a.btn.btn-primary(href=`/movies/${movie.film_id}`) Details
+              a.btn.btn-primary.mt-auto.align-self-start(href=`/movies/${movie.film_id}`) Details
 
   if totalPages > 1
     nav(aria-label="Paginering")

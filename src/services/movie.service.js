@@ -6,10 +6,10 @@ const TAG = "movie.service";
 function getMovies(page, limit, callback) {
     movieDao.getAllMovies(page, limit, (err, movies, totalCount) => {
         if (err) {
-            logger.error(TAG, "Error fetching movies", err);
+            logger.error(`${TAG} Error fetching movies: ${err}`);
             return callback([], 0);
         }
-        logger.debug(TAG, "Fetched ${movies.length} movies, totalCount: ${totalCount}");
+        logger.debug(`${TAG} Fetched ${movies.length} movies, totalCount: ${totalCount}`);
         callback(movies, totalCount);
     });
 }
@@ -17,9 +17,10 @@ function getMovies(page, limit, callback) {
 function getMovieById(id, callback) {
     movieDao.getMoviesById(id, (err, movie) => {
         if (err) {
-            logger.error(TAG, "Error finding movie with id ${id}", err);
+            logger.error(`${TAG} Error finding movie with id ${id}: ${err}`);
             return callback(null);
         }
+        logger.debug(`${TAG} Fetched movie with id ${id}`);
         callback(movie);
     });
 }
@@ -27,37 +28,45 @@ function getMovieById(id, callback) {
 function updateMovie(id, movie, callback) {
     movieDao.updateMovie(id, movie, (err) => {
         if (err) {
-            logger.error(TAG, "Error updating movie with id ${id}", err);
+            logger.error(`${TAG} Error updating movie with id ${id}: ${err}`);
             return callback(err);
         }
-        logger.info(TAG, "Movie with id ${id} updated successfully");
+        logger.info(`${TAG} Movie with id ${id} updated successfully`);
         callback(null);
     });
 }
 
 function deleteMovie(id, callback) {
-    movieDao.deleteMovie(id, callback, (err) => {
+    movieDao.deleteMovie(id, (err) => {
         if (err) {
-            logger.error(TAG, "Error deleting movie with id ${id}", err);
+            logger.error(`${TAG} Error deleting movie with id ${id}: ${err}`);
             return callback(err);
         }
-        logger.info(TAG, "Movie was deleted successfully");
+        logger.info(`${TAG} Movie with id ${id} deleted successfully`);
         callback(null);
     });
 }
 
 function createMovie(movie, callback) {
-    movieDao.createMovie(movie, callback, (err) => {
+    movieDao.createMovie(movie, (err, result) => {
         if (err) {
-            logger.error(TAG, "Error deleting movie with id ${id}", err);
+            logger.error(`${TAG} Error creating movie: ${err}`);
             return callback(err);
         }
-        logger.info(TAG, "Movie was deleted successfully");
+        logger.info(`${TAG} Movie created successfully with id ${result.film_id}`);
+        callback(null, result);
     });
 }
 
 function getAllLanguages(callback) {
-    movieDao.getAllLanguages(callback);
+    movieDao.getAllLanguages((err, languages) => {
+        if (err) {
+            logger.error(`${TAG} Error fetching languages: ${err}`);
+            return callback(err, null);
+        }
+        logger.debug(`${TAG} Fetched ${languages.length} languages`);
+        callback(null, languages);
+    });
 }
 
 module.exports = { getMovies, getMovieById, updateMovie, deleteMovie, createMovie, getAllLanguages };

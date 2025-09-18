@@ -18,7 +18,7 @@ const pool = mysql.createPool({
 });
 
 function getAllMovies(page, limit, callback) {
-    logger.debug(TAG, 'getAllMovies');
+    logger.debug(`${TAG} getAllMovies`);
     const offset = (page - 1) * limit;
     pool.query(
         `SELECT 
@@ -36,17 +36,19 @@ function getAllMovies(page, limit, callback) {
         [limit, offset],
         (err, results) => {
             if (err) {
+                logger.error(`${TAG} getAllMovies error: ${err}`);
                 return callback(err, null, 0);
             }
             const movies = results[0];
             const totalCount = results[1][0].count;
+            logger.debug(`${TAG} getAllMovies fetched ${movies.length} movies`);
             callback(null, movies, totalCount);
         }
     );
 }
 
 function getMoviesById(id, callback) {
-    logger.debug(TAG, 'getMovieById', id);
+    logger.debug(`${TAG} getMovieById: ${id}`);
     const sql = `
         SELECT 
             f.film_id, 
@@ -66,13 +68,17 @@ function getMoviesById(id, callback) {
         WHERE f.film_id = ?
     `;
     pool.query(sql, [id], (err, results) => {
-        if (err) return callback(err, null);
+        if (err) {
+            logger.error(`${TAG} getMovieById error: ${err}`);
+            return callback(err, null);
+        }
+        logger.debug(`${TAG} getMovieById fetched movie`);
         callback(null, results[0]);
     });
 }
 
 function createMovie(movie, callback) {
-    logger.debug(TAG, 'addMovie', movie);
+    logger.debug(`${TAG} addMovie: ${movie.title}`);
     const sql = `
         INSERT INTO film (title, description, release_year, language_id, rental_duration, rental_rate, replacement_cost, length, rating, image)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -90,13 +96,17 @@ function createMovie(movie, callback) {
         movie.image || '/images/Beunotheek-logo.png',
     ];
     pool.query(sql, params, (err, results) => {
-        if (err) return callback(err, null);
+        if (err) {
+            logger.error(`${TAG} addMovie error: ${err}`);
+            return callback(err, null);
+        }
+        logger.info(`${TAG} Movie created with id: ${results.insertId}`);
         callback(null, { film_id: results.insertId, ...movie });
     });
 }
 
 function updateMovie(id, movie, callback) {
-    logger.debug(TAG, 'updateMovie', id);
+    logger.debug(`${TAG} updateMovie: ${id}`);
 
     const sql = `UPDATE film 
                     SET title = ?, 
@@ -126,31 +136,43 @@ function updateMovie(id, movie, callback) {
     ];
 
     pool.query(sql, params, (err) => {
-        if (err) return callback(err);
+        if (err) {
+            logger.error(`${TAG} updateMovie error: ${err}`);
+            return callback(err);
+        }
+        logger.info(`${TAG} Movie updated with id: ${id}`);
         callback(null);
     });
 }
 
 function deleteMovie(id, callback) {
-    logger.debug(TAG, 'deleteMovie', id);
+    logger.debug(`${TAG} deleteMovie: ${id}`);
     const sql = "DELETE FROM film WHERE film_id = ?";
     pool.query(sql, [id], (err) => {
-        if (err) return callback(err);
+        if (err) {
+            logger.error(`${TAG} deleteMovie error: ${err}`);
+            return callback(err);
+        }
+        logger.info(`${TAG} Movie deleted with id: ${id}`);
         callback(null);
     });
 }
 
 function getAllLanguages(callback) {
-    logger.debug(TAG, 'getAllLanguages');
+    logger.debug(`${TAG} getAllLanguages`);
     const sql = "SELECT language_id, name FROM language ORDER BY name";
     pool.query(sql, (err, results) => {
-        if (err) return callback(err, null);
+        if (err) {
+            logger.error(`${TAG} getAllLanguages error: ${err}`);
+            return callback(err, null);
+        }
+        logger.debug(`${TAG} getAllLanguages fetched ${results.length} languages`);
         callback(null, results);
     });
 }
 
 function searchMovies(search, callback) {
-    logger.debug(TAG, 'searchMovies', search);
+    logger.debug(`${TAG} searchMovies: ${search}`);
     const sql = `
         SELECT 
             film_id, 
@@ -165,7 +187,11 @@ function searchMovies(search, callback) {
     `;
     const param = [`%${search}%`];
     pool.query(sql, param, (err, results) => {
-        if (err) return callback(err, null);
+        if (err) {
+            logger.error(`${TAG} searchMovies error: ${err}`);
+            return callback(err, null);
+        }
+        logger.debug(`${TAG} searchMovies fetched ${results.length} movies`);
         callback(null, results);
     });
 }
