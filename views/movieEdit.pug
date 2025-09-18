@@ -1,0 +1,58 @@
+extends layout
+
+block content
+  a.btn.btn-outline-dark.mb-4(href=`/movies/${movie.film_id}`) Terug naar details
+
+  form(action=`/movies/${movie.film_id}/edit`, method="POST")
+    h1.mb-4
+      | Edit:&nbsp;
+      input.form-control.d-inline-block.w-auto.fs-2(type="text", name="title", id="title", value=movie.title, style="width: auto; display: inline-block; vertical-align: middle;")
+
+    .row
+      .col-md-4
+        img.img-fluid.rounded.mb-3(src=movie.image || "/images/Beunotheek-logo.png", alt="Film Poster")
+        label.form-label(for="image") Poster URL
+        input.form-control(type="text", name="image", id="image", value=movie.image)
+
+      .col-md-5
+        label.form-label(for="description") Beschrijving
+        textarea.form-control(name="description", id="description", rows="10") #{movie.description}
+
+      .col-md-3
+        .card.mb-3.border-primary
+          .card-body
+            h5.card-title Huurinformatie
+            label.form-label(for="rental_rate") Huurprijs
+            input.form-control(type="number", step="0.01", min="0", name="rental_rate", id="rental_rate", value=movie.rental_rate)
+            
+            label.form-label(for="rental_duration") Huurtermijn (dagen)
+            input.form-control(type="number", step="1", min="1", name="rental_duration", id="rental_duration", value=movie.rental_duration)
+
+            label.form-label(for="replacement_cost") Vervangingskosten
+            input.form-control(type="number", step="0.01", min="0", name="replacement_cost", id="replacement_cost", value=movie.replacement_cost)
+                    
+        .card.mb-3.border-primary
+          .card-body
+            h5.card-title Details
+            label.form-label(for="release_year") Uitgavejaar
+            input.form-control(type="number", step="1", min="1800", max="2099", name="release_year", id="release_year", value=movie.release_year)
+
+            label.form-label(for="length") Lengte (minuten)
+            input.form-control(type="number", step="1", min="0", name="length", id="length", value=movie.length)
+            
+            label.form-label(for="rating") Leeftijdsclassificatie
+            input.form-control(type="text", name="rating", id="rating", value=movie.rating)
+            
+            label.form-label(for="language_id") Taal
+            select.form-select(name="language_id" id="language_id")
+                each lang in languages
+                    option(value=lang.language_id selected=(lang.language_id === movie.language_id))= lang.name
+
+
+    .d-flex.mt-3
+        .d-flex.mt-3
+        form(action=`/movies/${movie.film_id}/edit` method="post")
+            button.btn.btn-success(type="submit") Opslaan
+
+        form(action=`/movies/${movie.film_id}/delete` method="post" onsubmit="return confirm('Weet je zeker dat je deze film wilt verwijderen?');")
+            button.btn.btn-danger.ms-2(type="submit") Verwijder film

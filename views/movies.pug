@@ -1,9 +1,66 @@
 extends layout
 
 block content
+
   h1= title
-  p Welcome to #{title}
-  
-  ul 
-    each movie in movies
-      li= movie.title
+  p Hieronder ziet u een lijst met beschikbare films.
+
+  form(method="get", action="/movies", class="mb-4 d-flex align-items-center gap-2")
+    label(for="limit", class="form-label mb-0 me-2") Aantal films per pagina:
+    select#limit.form-select(name="limit", onchange="this.form.submit()", style="width: auto;")
+      option(value="5" selected=limit==5) 5
+      option(value="10" selected=limit==10) 10
+      option(value="20" selected=limit==20) 20
+      option(value="40" selected=limit==40) 40
+    input(type="hidden", name="page", value=page)
+
+  if isAuthenticated
+    a.btn.btn-success.mb-3(href="/movies/create") Voeg nieuwe film toe
+
+
+  .container
+    .row
+      each movie in movies
+        .col-md-4.mb-4
+          .card.h-100
+            .poster-container
+              img.poster-bg(src=movie.image, alt="Poster achtergrond")
+              img.poster-fg(src=movie.image, alt="Filmposter")
+                  
+              if movie.rating == "AL"
+                img.rating-icon(src="https://www.kijkwijzer.nl/media/ovmjwgmq/al.png", alt="AL")
+              else if movie.rating == "6"
+                img.rating-icon(src="https://www.kijkwijzer.nl/media/avlcycfz/6.png", alt="6")
+              else if movie.rating == "9"
+                img.rating-icon(src="https://www.kijkwijzer.nl/media/s5rf1lpy/9.png", alt="9")
+              else if movie.rating == "12"
+                img.rating-icon(src="https://www.kijkwijzer.nl/media/vz4av3wf/12.png", alt="12")
+              else if movie.rating == "14"
+                img.rating-icon(src="	https://www.kijkwijzer.nl/media/0gnp0ifa/14.png", alt="14")
+              else if movie.rating == "16"
+                img.rating-icon(src="https://www.kijkwijzer.nl/media/iryaeluj/16.png", alt="16")
+              else if movie.rating == "18"
+                img.rating-icon(src="https://www.kijkwijzer.nl/media/xtimbi5i/18.png", alt="18")
+           
+            .card-body.d-flex.flex-column
+              h5.card-title #{movie.title}
+              p.card-text #{movie.description}
+              a.btn.btn-primary.mt-auto.align-self-start(href=`/movies/${movie.film_id}`) Details
+
+  if totalPages > 1
+    nav(aria-label="Paginering")
+      ul.pagination.justify-content-center
+
+        li.page-item(class=!pagination.hasPrev ? 'disabled' : '')
+          a.page-link(href=pagination.hasPrev ? `/movies?page=${pagination.prevPage}&limit=${limit}` : '#') &laquo; Prev
+
+        each link in pagination.pageLinks
+          if link.type === 'ellipsis'
+            li.page-item.disabled.d-none.d-sm-block
+              span.page-link …
+          else if link.type === 'page'
+            li.page-item(class=link.active ? 'active d-none d-sm-block' : 'd-none d-sm-block')
+              a.page-link(href=`/movies?page=${link.number}&limit=${limit}`) #{link.number}
+
+        li.page-item(class=!pagination.hasNext ? 'disabled' : '')
+          a.page-link(href=pagination.hasNext ? `/movies?page=${pagination.nextPage}&limit=${limit}` : '#') Next &raquo;

@@ -1,0 +1,104 @@
+extends ../layout
+
+block content
+  .d-flex.align-items-center.justify-content-center.min-vh-100.bg-light
+    .w-100(style="max-width: 600px;")
+      h2.text-center.mb-4 Nieuwe medewerker aanmaken
+
+      form(method="POST", action="/auth/register")
+        //- First Name
+        .mb-3
+          label.form-label(for="first_name") First Name
+          input#first_name.form-control(
+            type="text",
+            name="first_name",
+            placeholder="Enter first name",
+            required,
+            class=(error ? "is-invalid" : ""),
+            value=(typeof first_name !== 'undefined' ? first_name : '')
+          )
+          if error
+            .invalid-feedback
+              strong #{error}
+
+        //- Last Name
+        .mb-3
+          label.form-label(for="last_name") Last Name
+          input#last_name.form-control(
+            type="text",
+            name="last_name",
+            placeholder="Enter last name",
+            required,
+            class=(error ? "is-invalid" : ""),
+            value=(typeof last_name !== 'undefined' ? last_name : '')
+          )
+          if error
+            .invalid-feedback
+              strong #{error}
+
+        //- //- Address (dropdown of text)
+        //- .mb-3
+        //-   label.form-label(for="address_id") Address
+        //-   select#address_id.form-select(name="address_id", required)
+        //-     option(value="") Select Address
+        //-     each addr in addresses
+        //-       option(value=addr.address_id selected=(typeof address_id !== 'undefined' && address_id == addr.address_id ? true : false)) #{addr.address}
+
+        //- //- Store (dropdown)
+        //- .mb-3
+        //-   label.form-label(for="store_id") Store
+        //-   select#store_id.form-select(name="store_id", required)
+        //-     option(value="") Select Store
+        //-     each store in stores
+        //-       option(value=store.store_id selected=(typeof store_id !== 'undefined' && store_id == store.store_id ? true : false)) #{store.store_name}
+
+        //- Email
+        .mb-3
+          label.form-label(for="email") Email
+          input#email.form-control(
+            type="email",
+            name="email",
+            placeholder="Enter email",
+            required,
+            class=(error ? "is-invalid" : ""),
+            value=(typeof email !== 'undefined' ? email : '')
+          )
+          if error
+            .invalid-feedback
+              strong #{error}
+
+        //- Username
+        .mb-3
+          label.form-label(for="username") Username
+          input#username.form-control(
+            type="text",
+            name="username",
+            placeholder="Enter username",
+            required,
+            class=(error ? "is-invalid" : ""),
+            value=(typeof username !== 'undefined' ? username : '')
+          )
+          if error
+            .invalid-feedback
+              strong #{error}
+
+        //- Password
+        .mb-3
+          label.form-label(for="password") Password
+          input#password.form-control(
+            type="password",
+            name="password",
+            placeholder="Enter password",
+            required,
+            class=(error ? "is-invalid" : "")
+          )
+          if error
+            .invalid-feedback
+              strong #{error}
+
+        //- Is Active
+        .form-check.mb-3
+          input#is_active.form-check-input(type="checkbox", name="is_active", value="1", checked=(typeof is_active !== 'undefined' && is_active ? true : false))
+          label.form-check-label(for="is_active") Active
+
+        button.btn.btn-primary.w-100(type="submit") Maak medewerker aan

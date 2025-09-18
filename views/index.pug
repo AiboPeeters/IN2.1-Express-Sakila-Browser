@@ -1,15 +1,30 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-
-  .card
-    .card-header Quote
-    .card-body
-      figure
-        blockquote.blockquote
-          p Beunen
-        figcaption.blockquote-footer
-          cite(title="Source Title") John Beun
-
+  .no-margin
+    #carouselExampleSlidesOnly.carousel.slide.carousel-banner(data-bs-ride="carousel" data-bs-interval="3000")
+      .carousel-inner
+        .carousel-item.active
+          img.d-block.w-100(src="https://static0.cbrimages.com/wordpress/wp-content/uploads/2024/09/jurassic-world-rebirth.jpg?q=70&fit=crop&w=1100&h=618&dpr=1" alt="Slide 1")
+          .carousel-caption
+            span.label UITGELICHT
+            h2 Jurrasic World: Rebirth
+            p A team travels to a former island research facility where the three largest prehistoric animals reside, with the goal of extracting samples that are vital for a heart disease treatment.
+        .carousel-item
+          img.d-block.w-100(src="https://i.ytimg.com/vi/UGOvEad8qd4/maxresdefault.jpg" alt="Slide 2")
+          .carousel-caption
+            span.label TOP 10 IN NEDERLAND
+            h2 Nobody 2
+            p Workaholic assassin Hutch Mansell takes his family on a much-needed vacation to the small tourist town of Plummerville. However, he soon finds himself in the crosshairs of a corrupt theme-park operator, a shady sheriff, and a bloodthirsty crime boss.
+        .carousel-item
+          img.d-block.w-100(src="https://www.apple.com/tv-pr/shows-and-films/f/f1/images/show-home-graphic-header/key-art-03/4x1/Apple_TV_F1_key_art_graphic_header_4_1_show_home.jpg.large_2x.jpg" alt="Slide 3")
+          .carousel-caption
+            span.label AANRADER
+            h2 F1 The Movie
+            p Dubbed "the greatest that never was", Sonny Hayes was FORMULA 1's most promising phenom of the 1990s until an accident on the track nearly ended his career. Thirty years later, he's a nomadic racer-for-hire when he's approached by his former teammate Ruben Cervantes, owner of a struggling FORMULA 1 team that is on the verge of collapse.
+  
+  .container.mt-5
+  .text-center
+    h2 Welkom op de Beunotheek Website!
+    p Ontdek de nieuwste en populairste films op één plek.
+    a.btn.btn-primary.mt-3(href="/movies") Bekijk ons aanbod

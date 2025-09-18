@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  h1 Over deze site
+  p Deze webapplicatie is gemaakt voor het beheren en bekijken van films.
+  ul
+    li Je kunt films zoeken, toevoegen, bewerken en verwijderen.
+    li Gemaakt als project voor Avans Hogeschool.
+  
+  p De source code is te vinden op GitHub: 
+    a(href="https://github.com/AiboPeeters/IN2.1-Express-Sakila-Browser" target="_blank") https://github.com/AiboPeeters/IN2.1-Express-Sakila-Browser
+
+  h2.mt-5 Gebruikte middelen:
+  ul
+    li Node.js
+    li Express.js
+    li Pug template engine
+    li Bootstrap voor de vormgeving
+    li MySQL als database
+
+  h2.mt-5 Epics, User Stories en Acceptatiecriteria
+
+  .row.mt-4
+    .col-md-4
+      .card.mb-4
+        .card-header.bg-dark-red.text-white
+          h4.mb-0 Epic: Filmbeheer
+        .card-body
+          h5 User Story
+          p Als admin wil ik films kunnen toevoegen zodat het aanbod actueel blijft.
+          h5.mt-3 Acceptatiecriterium
+          p Alleen ingelogde beheerders kunnen films toevoegen.
+    .col-md-4
+      .card.mb-4
+        .card-header.bg-dark-red.text-white
+          h4.mb-0 Epic: Kwaliteitscontrole
+        .card-body
+          h5 User Story
+          p Als admin wil ik films kunnen bewerken zodat onjuiste informatie snel gecorrigeerd kan worden.
+          h5.mt-3 Acceptatiecriterium
+          p Na het bewerken van een film wordt de wijziging direct zichtbaar in het overzicht.
+    .col-md-4
+      .card.mb-4
+        .card-header.bg-dark-red.text-white
+          h4.mb-0 Epic: Opschonen aanbod
+        .card-body
+          h5 User Story
+          p Als admin wil ik films kunnen verwijderen zodat verouderde of ongewenste films niet zichtbaar zijn.
+          h5.mt-3 Acceptatiecriterium
+          p Verwijderen van een film vraagt altijd om bevestiging.
+
+  .card.mt-5
+    .card-header Quote
+    .card-body
+      figure
+        blockquote.blockquote
+          p Beunen
+        figcaption.blockquote-footer
+          cite(title="Source Title") John Beun
