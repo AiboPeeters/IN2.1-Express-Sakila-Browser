@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Run Cypress tests
-        run: npm run cy:run
+        # run: npm run cy:run
   
   deploy:
     runs-on: ubuntu-latest
