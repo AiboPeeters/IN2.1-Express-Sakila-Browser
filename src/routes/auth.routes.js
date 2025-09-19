@@ -4,8 +4,6 @@ const authController = require("../controllers/auth.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 const logger = require("../util/logger");
 
-
-
 router.get("/login", authController.login)
 
 router.get("/register", authMiddleware.requireAuth, authController.register)

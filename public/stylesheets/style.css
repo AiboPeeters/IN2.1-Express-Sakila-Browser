@@ -1,3 +1,4 @@
+/* algemeen */
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   overflow-x: hidden;
@@ -15,10 +16,35 @@ a {
   color: #cc3428;
 }
 
+.btn-primary {
+  background-color: #cc3428;
+  border-color: #cc3428;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #900016;
+  border-color: #900016;
+}
+
+/* pagination */
+.page-link,
+.page-link:focus,
+.page-link:hover {
+  color: #cc3428;
+  background-color: #fff;
+}
+
+.page-item.active .page-link {
+  color: #fff;
+  background-color: #cc3428;
+  border-color: #cc3428;
+}
+
+/* carousel index pagina */
 .no-margin {
   margin-top: -48px;
 }
-
 
 .carousel-banner {
   width: 100vw;
@@ -64,6 +90,7 @@ a {
   margin-bottom: 12px;
 }
 
+/* movies pagina */
 .poster-container {
   position: relative;
   width: 100%;
@@ -106,31 +133,7 @@ a {
   z-index: 2;
 }
 
-.btn-primary {
-  background-color: #cc3428;
-  border-color: #cc3428;
-}
-
-.btn-primary:hover,
-.btn-primary:focus {
-  background-color: #900016;
-  border-color: #900016;
-}
-
-.page-link,
-.page-link:focus,
-.page-link:hover {
-  color: #cc3428;
-  border-color: #cc3428;
-  background-color: #fff;
-}
-
-.page-item.active .page-link {
-  color: #fff;
-  background-color: #cc3428;
-  border-color: #cc3428;
-}
-
+/* movie details/edit pagina */
 .border-primary {
   border-color: #cc3428 !important;
 }

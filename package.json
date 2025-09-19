@@ -1,6 +1,6 @@
 {
   "name": "myfirstserver",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "scripts": {
     "start": "node ./bin/www",
     "start_dev": "nodemon ./bin/www",
