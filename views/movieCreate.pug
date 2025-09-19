@@ -43,7 +43,15 @@ block content
 
     .mb-3
       label.form-label(for="rating") Leeftijdsclassificatie
-      input.form-control(type="text" name="rating" id="rating" required)
+      select.form-select(name="rating" id="rating" required)
+        option(value="" disabled selected) Kies classificatie
+        option(value="AL") AL
+        option(value="6") 6
+        option(value="9") 9
+        option(value="12") 12
+        option(value="14") 14
+        option(value="16") 16
+        option(value="18") 18
 
     .mb-3
       label.form-label(for="image") Afbeelding URL
