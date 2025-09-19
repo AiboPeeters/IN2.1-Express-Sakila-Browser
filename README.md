@@ -1,4 +1,4 @@
-# Beunotheek - Mijn Sakila Browser met Express
+# Beunotheek - Een Sakila Browser met Express
 
 Welkom bij de Beunotheek!  
 Deze Node.js/Express-applicatie is ontwikkeld voor het beheren en bekijken van films, uit de sakila oefendatabase van mySQL.
