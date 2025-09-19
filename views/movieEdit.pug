@@ -41,7 +41,14 @@ block content
             input.form-control(type="number", step="1", min="0", name="length", id="length", value=movie.length)
             
             label.form-label(for="rating") Leeftijdsclassificatie
-            input.form-control(type="text", name="rating", id="rating", value=movie.rating)
+            select.form-select(name="rating" id="rating")
+                option(value="AL" selected=(movie.rating === "AL")) AL
+                option(value="6" selected=(movie.rating === "6")) 6
+                option(value="9" selected=(movie.rating === "9")) 9
+                option(value="12" selected=(movie.rating === "12")) 12
+                option(value="14" selected=(movie.rating === "14")) 14
+                option(value="16" selected=(movie.rating === "16")) 16
+                option(value="18" selected=(movie.rating === "18")) 18
             
             label.form-label(for="language_id") Taal
             select.form-select(name="language_id" id="language_id")
