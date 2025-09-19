@@ -3,7 +3,7 @@ extends ../layout
 block content
   .d-flex.align-items-center.justify-content-center.min-vh-100.bg-light
     .w-100(style="max-width: 600px;")
-      h2.text-center.mb-4 Nieuwe medewerker aanmaken
+      h2.text-center.mb-4 Create User
 
       form(method="POST", action="/auth/register")
         //- First Name
@@ -101,4 +101,4 @@ block content
           input#is_active.form-check-input(type="checkbox", name="is_active", value="1", checked=(typeof is_active !== 'undefined' && is_active ? true : false))
           label.form-check-label(for="is_active") Active
 
-        button.btn.btn-primary.w-100(type="submit") Maak medewerker aan
+        button.btn.btn-primary.w-100(type="submit") Submit

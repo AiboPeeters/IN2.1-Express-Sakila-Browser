@@ -131,7 +131,7 @@ function updateMovie(id, movie, callback) {
         movie.replacement_cost || 0,
         movie.length || null,
         movie.rating || null,
-        movie.image || '/images/Beunotheek-logo.png',
+        movie.image || "/images/Beunotheek-logo.png",
         id,
     ];
 
